@@ -1,16 +1,18 @@
 var kafka = require('kafka-node'),
     Consumer = kafka.Consumer,
-    client = new kafka.Client('xx.xx.xx.xx:2181'),
+    client = new kafka.KafkaClient({"kafkaHost": '129.158.70.108:6667'}),
     consumer = new Consumer(
         client,
         [
-            { topic: 'paasproductmgmt-kKafkaTopic', partition: 0 }
+            { topic: 'bigdata003-mytopic', offset: 100}
         ],
         {
-            autoCommit: false
+            autoCommit: false,
+            fromOffset: true
         }
     );
 
     consumer.on('message', function (message) {
-    console.log(message.value);
+    tweet = JSON.parse(message.value);
+    console.log(tweet.text);
 });
